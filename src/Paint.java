@@ -20,6 +20,7 @@ public class Paint extends JPanel implements MouseListener, ActionListener, Mous
     Graphics2D gc;
     String numele = "imagine.jpg";
     String saveLocation = null;
+    String picPath = null;
 
     Paint()                            // constructor which is MainFile
     {
@@ -104,12 +105,20 @@ public class Paint extends JPanel implements MouseListener, ActionListener, Mous
         b2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                repaint();
-                Color temp = gc.getColor();
-                gc.setColor(BACKGROUND_COLOR);
-                gc.fillRect(0, 0, getWidth(), getHeight());
-                gc.setColor(temp);
-                repaint();
+                JFileChooser fc = new JFileChooser();
+                fc.setCurrentDirectory(new java.io.File("C:/Users/"));
+                fc.setDialogTitle("Alege folderul unde se afla imaginea: ");
+                if(fc.showOpenDialog(b2) == JFileChooser.APPROVE_OPTION)
+                {
+                    //
+                }
+                picPath  = fc.getSelectedFile().getAbsolutePath();
+
+                JLabel picLabel = new JLabel(new ImageIcon(picPath));
+                JPanel jPanel = new JPanel();
+                jPanel.add(picLabel);
+                frame.add(jPanel);
+                frame.setVisible(true);
             }
         });
 
@@ -179,6 +188,13 @@ public class Paint extends JPanel implements MouseListener, ActionListener, Mous
 
         frame.getContentPane().add(upPanel, BorderLayout.NORTH);
         frame.getContentPane().add(lowerPanel, BorderLayout.SOUTH);
+        if(picPath != null)
+        {
+            JLabel picLabel = new JLabel(new ImageIcon(picPath));
+            JPanel jPanel = new JPanel();
+            jPanel.add(picLabel);
+            frame.add(jPanel);
+        }
 
         addMouseListener(this);                    // receiving an event from the mouse
         frame.setVisible(true);                        // this frame is set visible to user
